@@ -22,6 +22,9 @@
 
 'use strict';
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+
+PAGE_ACCESS_TOKEN="EAADeHXUSPewBABNe11Im2i2QaCAtRgF4kwpDRnncnAhZCZCehGg1HtUCqIxExN2ZAV9h1V03WY4uPWbmX2Ed40RpDZCcH8kG3e6gJi2jICx9vftWAh70ZArR2KIme4EDK0vv40I6x8xA5XwVedowsZCPlU7mzY6M7uJAC7Wqb0dgZDZD"
+
 // Imports dependencies and set up http server
 const 
   request = require('request'),
@@ -43,25 +46,15 @@ app.post('/webhook', (req, res) => {
 
     body.entry.forEach(function(entry) {
 
-      // Gets the body of the webhook event
-      let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
+  // Gets the body of the webhook event
+  let webhook_event = entry.messaging[0];
+  console.log(webhook_event);
 
+  // Get the sender PSID
+  let sender_psid = webhook_event.sender.id;
+  console.log('Sender PSID: ' + sender_psid);
 
-      // Get the sender PSID
-      let sender_psid = webhook_event.sender.id;
-      console.log('Sender ID: ' + sender_psid);
-
-      // Check if the event is a message or postback and
-      // pass the event to the appropriate handler function
-      if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message);        
-      } else if (webhook_event.postback) {
-        
-        handlePostback(sender_psid, webhook_event.postback);
-      }
-      
-    });
+});
     // Return a '200 OK' response to all events
     res.status(200).send('EVENT_RECEIVED');
 
@@ -76,7 +69,7 @@ app.post('/webhook', (req, res) => {
 app.get('/webhook', (req, res) => {
   
   /** UPDATE YOUR VERIFY TOKEN **/
-  const VERIFY_TOKEN = "<YOUR VERIFY TOKEN>";
+  const VERIFY_TOKEN = "raef";
   
   // Parse params from the webhook verification request
   let mode = req.query['hub.mode'];
@@ -182,4 +175,20 @@ function callSendAPI(sender_psid, response) {
       console.error("Unable to send message:" + err);
     }
   }); 
+}
+
+
+// Handles messages events
+function handleMessage(sender_psid, received_message) {
+
+}
+
+// Handles messaging_postbacks events
+function handlePostback(sender_psid, received_postback) {
+
+}
+
+// Sends response messages via the Send API
+function callSendAPI(sender_psid, response) {
+  
 }
